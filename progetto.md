@@ -3,19 +3,19 @@ hai ragione: posso stamparti subito tutto il progetto completo in un colpo solo.
 Ecco quindi il toolkit Ansible pronto all’uso, già in formato YAML.
 
 📁 Struttura del progetto
-
+```
 config_toolkit/
 ├── apply_changes.yml
 ├── rollback_changes.yml
 ├── changes_to_apply.yml
 ├── data/        # conterrà i file di rollback generati automaticamente
 └── logs/        # conterrà i log delle esecuzioni
-
+```
 
 1️⃣ changes_to_apply.yml
 
 Il file di input con tutte le modifiche che vuoi applicare.
-
+```
 # changes_to_apply.yml
 changes:
   - host: server01
@@ -32,12 +32,12 @@ changes:
       - path: /opt/custom/app.conf
         original_line: "feature_enabled=false"
         updated_line: "feature_enabled=true"
-
+```
 
 2️⃣ apply_changes.yml
 
 Playbook per applicare modifiche e creare automaticamente il file di rollback + log.
-
+```
 # apply_changes.yml
 - name: Applica modifiche e genera rollback file
   hosts: all
@@ -94,12 +94,12 @@ Playbook per applicare modifiche e creare automaticamente il file di rollback + 
       copy:
         dest: "logs/apply_{{ label }}.log"
         content: "Modifiche applicate con label {{ label }} il {{ ansible_date_time.date }} alle {{ ansible_date_time.time }}\n"
-
+```
 
 3️⃣ rollback_changes.yml
 
 Playbook per rollback selezionando il file rollback_<label>.yml in data/.
-
+```
 # rollback_changes.yml
 - name: Esegui rollback delle modifiche
   hosts: all
@@ -156,7 +156,7 @@ Playbook per rollback selezionando il file rollback_<label>.yml in data/.
       copy:
         dest: "logs/rollback_{{ label }}.log"
         content: "Rollback eseguito con label {{ label }} il {{ ansible_date_time.date }} alle {{ ansible_date_time.time }}\n"
-
+```
 
 🔧 Come usarli
 
